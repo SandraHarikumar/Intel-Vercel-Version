@@ -9,7 +9,7 @@ interface BreadcrumbItem {
 
 export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
   return (
-    <nav className="flex mb-3 w-full max-w-3xl" aria-label="Breadcrumb">
+    <nav className="flex  w-full max-w-3xl" aria-label="Breadcrumb">
       <ol className="inline-flex items-center">
         {items.map((item, index) => (
           <li key={index} className="inline-flex items-center text-xs">
