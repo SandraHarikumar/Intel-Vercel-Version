@@ -103,7 +103,10 @@ export function MainLayout({ children, activeRoute = "/" }: MainLayoutProps) {
         <main className={`flex-1 overflow-y-auto ${activeRoute === "/" ? "ml-60" : "ml-12"}`}>
           {activeRoute === "/" ? (
             <>
-              <Breadcrumb items={getBreadcrumbItems()} />
+              {/* <Breadcrumb items={getBreadcrumbItems()} /> */}
+              <div className="p-4">
+        <Breadcrumb items={getBreadcrumbItems()} />
+      </div>
               <div className="flex gap-4 h-[calc(100vh-120px)]">
                 <div className="w-7/12">
                   <UseCaseExplorer onExplore={handleExploreUseCase} />

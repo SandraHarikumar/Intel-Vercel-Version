@@ -97,7 +97,9 @@ export function CalculateRoiContent() {
 
   return (
     <div className="h-[calc(100vh-120px)] flex flex-col">
-      <Breadcrumb items={breadcrumbItems} />
+      <div className="p-4">
+        <Breadcrumb items={breadcrumbItems} />
+      </div>
 
       <div className="flex-1 bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-blue-900/50 overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
