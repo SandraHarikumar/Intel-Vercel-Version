@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger, TabsContext } from "@/components/ui/tabs"
-import { FileText, Download, Edit, Save, X, CheckCircle, BarChart, DollarSign, ShoppingCart, Info } from "lucide-react"
+import { FileText, Download, Edit, Save, X, CheckCircle, BarChart, DollarSign, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table",
 import { Breadcrumb } from "@/components/breadcrumb"
 
 interface ProposalSection {
@@ -30,16 +30,16 @@ export function ProposalContent() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [successMessage, setSuccessMessage] = useState("")
 
-  const breadcrumbItems = [
+  // Bill of Materials items based on selected SKUs from previous screens
+
+   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Explore Usecase", href: "/" },
     { label: "SKU Recommendations", href: "/sku-recommendations" },
     { label: "Targeted Operational Cost", href: "/cost-questions" },
-    { label: "Summary", href: "/summary" },
-    { label: "Calculate ROI", href: "/calculate-roi" },
+    { label: "Summary", href: "/summary", },
+    { label: "Calculate ROI", href: "/calculate-roi", },
     { label: "Generate Proposal", href: "/generate-proposal", active: true },
   ]
-
   const [bomItems, setBomItems] = useState<BOMItem[]>([
     {
       id: "1",
@@ -244,29 +244,29 @@ North American Payment Processor
       content: `Our implementation strategy follows a collaborative approach:
 
 1. Initial Assessment & Planning
-- Requirements validation
-- Environment assessment
-- Detailed implementation plan development
+  - Requirements validation
+  - Environment assessment
+  - Detailed implementation plan development
 
 2. Agile Implementation
-- Two-week sprint cycles
-- Regular demos and feedback sessions
-- Continuous integration and testing
+  - Two-week sprint cycles
+  - Regular demos and feedback sessions
+  - Continuous integration and testing
 
 3. Knowledge Transfer
-- Hands-on training sessions
-- Comprehensive documentation
-- Shadowing opportunities with our experts
+  - Hands-on training sessions
+  - Comprehensive documentation
+  - Shadowing opportunities with our experts
 
 4. Post-Implementation Support
-- 30-day hypercare period
-- 24/7 critical issue support
-- Quarterly system health checks
+  - 30-day hypercare period
+  - 24/7 critical issue support
+  - Quarterly system health checks
 
 5. Continuous Improvement
-- Performance optimization recommendations
-- Quarterly technology reviews
-- Model retraining guidance`,
+  - Performance optimization recommendations
+  - Quarterly technology reviews
+  - Model retraining guidance`,
       isEditing: false,
       isExpanded: false,
     },
@@ -356,236 +356,224 @@ Model Drift
   }))
 
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col">
-      <div className="p-4">
-        <Breadcrumb items={breadcrumbItems} />
-      </div>
-      <div className="flex-1 pt-2 overflow-y-auto">
-        <div className="px-4 pb-4">
-          <div className="rounded-md p-4 mb-4">
-            <div className="flex items-start">
-              <Info className="h-5 w-5 text-[#4a9eff] mr-2 mt-0.5 flex-shrink-0" />
-              <p className="text-sm">
-                Review and customize the Bill of Materials and Proposal details before generating the final document
-              </p>
-            </div>
-          </div>
-
-          {showSuccessMessage && (
-            <div className="mb-4 rounded-md p-3 flex items-center">
-              <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-              <span>{successMessage}</span>
-              <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setShowSuccessMessage(false)}>
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
-
-          <TabsContext.Provider value={{ value: activeTab, onValueChange: setActiveTab }}>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-2 w-64 mb-4">
-                <TabsTrigger value="bom">Bill of Materials</TabsTrigger>
-                <TabsTrigger value="proposal">Proposal</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="bom" className="mt-0">
-                <div className="rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-semibold flex items-center">
-                      <ShoppingCart className="h-5 w-5 mr-2" />
-                      Bill of Materials
-                    </h2>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center text-xs border-[#003a66] bg-[#001a33] hover:bg-[#002b4d]"
-                      >
-                        <Download className="h-3.5 w-3.5 mr-1" />
-                        Export as CSV
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="rounded-md overflow-hidden mb-4">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="hover:bg-gray-100">
-                          <TableHead className="font-medium">Item</TableHead>
-                          <TableHead className="font-medium">Category</TableHead>
-                          <TableHead className="font-medium text-right">Quantity</TableHead>
-                          <TableHead className="font-medium text-right">Unit Price</TableHead>
-                          <TableHead className="font-medium text-right">Total Price</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {bomItems.map((item) => (
-                          <TableRow key={item.id} className="hover:bg-gray-50">
-                            <TableCell className="font-medium">{item.name}</TableCell>
-                            <TableCell>{item.category}</TableCell>
-                            <TableCell className="text-right">{item.quantity}</TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex items-center justify-end">
-                                <DollarSign className="h-3 w-3 mr-0.5" />
-                                <span className="font-mono">{item.unitPrice.toLocaleString()}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right font-medium">
-                              <div className="flex items-center justify-end">
-                                <DollarSign className="h-3 w-3 mr-0.5" />
-                                <span className="font-mono">{item.totalPrice.toLocaleString()}</span>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-
-                        {/* Total row */}
-                        <TableRow className="font-medium hover:bg-gray-100">
-                          <TableCell colSpan={4} className="text-right flex items-center justify-end">
-                            <BarChart className="h-4 w-4 mr-2" />
-                            <span>Total</span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end">
-                              <DollarSign className="h-4 w-4 mr-0.5" />
-                              <span className="font-mono">${totalCost.toLocaleString()}</span>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-
-                  <h3 className="text-md font-medium mb-3">Cost Breakdown by Category</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div className="rounded-lg p-3">
-                      <div className="space-y-2">
-                        {categoryTotals.map((cat, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span>{cat.category}</span>
-                            <span className="font-medium">${cat.total.toLocaleString()}</span>
-                          </div>
-                        ))}
-                        <div className="pt-2 mt-2 border-t flex justify-between items-center">
-                          <span className="font-medium">Total</span>
-                          <span className="font-bold">${totalCost.toLocaleString()}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg p-3">
-                      <h4 className="text-sm font-medium mb-2">Category Distribution</h4>
-                      <div className="space-y-2">
-                        {categoryTotals.map((cat, index) => {
-                          const percentage = (cat.total / totalCost) * 100
-                          return (
-                            <div key={index}>
-                              <div className="flex justify-between text-xs mb-1">
-                                <span>{cat.category}</span>
-                                <span>{percentage.toFixed(1)}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                <div
-                                  className="bg-blue-600 h-2.5 rounded-full"
-                                  style={{ width: `${percentage}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="proposal" className="mt-0">
-                <div className="rounded-lg p-4 overflow-y-auto h-[calc(100vh-220px)]">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-semibold">Proposal Details</h2>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center text-xs border-[#003a66] bg-[#001a33] hover:bg-[#002b4d]"
-                      >
-                        <FileText className="h-3.5 w-3.5 mr-1" />
-                        Load Template
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center text-xs border-[#003a66] bg-[#001a33] hover:bg-[#002b4d]"
-                      >
-                        <Download className="h-3.5 w-3.5 mr-1" />
-                        Export as PDF
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    {sections.map((section) => (
-                      <div key={section.id} className="rounded-md overflow-hidden">
-                        <button
-                          onClick={() => toggleExpand(section.id)}
-                          className="w-full flex items-center justify-between p-3 text-left"
-                        >
-                          <span className="font-medium">{section.title}</span>
-                          <span className="ml-2">{section.isExpanded ? "▼" : "▶"}</span>
-                        </button>
-
-                        {section.isExpanded && (
-                          <div className="p-3 pt-0 border-t">
-                            <div className="flex justify-end mb-2">
-                              {section.isEditing ? (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-7 flex items-center text-xs"
-                                  onClick={() => saveContent(section.id)}
-                                >
-                                  <Save className="h-3.5 w-3.5 mr-1 text-green-400" />
-                                  Save
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-7 flex items-center text-xs"
-                                  onClick={() => toggleEdit(section.id)}
-                                >
-                                  <Edit className="h-3.5 w-3.5 mr-1 text-blue-400" />
-                                  Edit
-                                </Button>
-                              )}
-                            </div>
-
-                            {section.isEditing ? (
-                              <Textarea
-                                value={section.content}
-                                onChange={(e) => updateContent(section.id, e.target.value)}
-                                className="min-h-[200px]"
-                              />
-                            ) : (
-                              <div className="whitespace-pre-line text-sm">{section.content}</div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </TabsContext.Provider>
+    <div className="h-[calc(100vh-120px)]">
+     <Breadcrumb items={breadcrumbItems} />
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-semibold">Generate Proposal</h1>
+        <div className="flex items-center space-x-2">
+          <Button
+            className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm"
+            onClick={exportProposal}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export Proposal
+          </Button>
+          <Button
+            className="bg-green-700 hover:bg-green-600 text-white px-4 py-1.5 rounded-md text-sm"
+            onClick={saveProposal}
+          >
+            <Save className="h-4 w-4 mr-2" />
+            Save Proposal
+          </Button>
         </div>
       </div>
-      <div className="p-4 flex justify-end">
-        <Button className="bg-[#0047AB] hover:bg-[#003d91] text-white">
-          <Save className="h-4 w-4 mr-2" />
-          Save Proposal
-        </Button>
+
+      <div className="text-xs text-blue-200 bg-blue-900/30 rounded-md p-2 mb-4">
+        Review and customize the Bill of Materials and Proposal details before generating the final document
       </div>
+
+      {showSuccessMessage && (
+        <div className="mb-4 bg-green-900/20 border border-green-700/30 rounded-md p-3 flex items-center">
+          <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+          <span>{successMessage}</span>
+          <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setShowSuccessMessage(false)}>
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      <TabsContext.Provider value={{ value: activeTab, onValueChange: setActiveTab }}>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-2 w-64 mb-4">
+            <TabsTrigger value="bom">Bill of Materials</TabsTrigger>
+            <TabsTrigger value="proposal">Proposal</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="bom" className="mt-0">
+            <div className="bg-black/40 backdrop-blur-sm rounded-lg border border-blue-900/50 p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold flex items-center">
+                  <ShoppingCart className="h-5 w-5 text-blue-400 mr-2" />
+                  Bill of Materials
+                </h2>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="sm" className="flex items-center text-xs">
+                    <Download className="h-3.5 w-3.5 mr-1" />
+                    Export as CSV
+                  </Button>
+                </div>
+              </div>
+
+              <div className="rounded-md border border-blue-900/50 overflow-hidden bg-gradient-to-b from-blue-950/30 to-black/50 mb-4">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-blue-900/40 hover:bg-blue-900/50">
+                      <TableHead className="text-blue-200 font-medium">Item</TableHead>
+                      <TableHead className="text-blue-200 font-medium">Category</TableHead>
+                      <TableHead className="text-blue-200 font-medium text-right">Quantity</TableHead>
+                      <TableHead className="text-blue-200 font-medium text-right">Unit Price</TableHead>
+                      <TableHead className="text-blue-200 font-medium text-right">Total Price</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {bomItems.map((item) => (
+                      <TableRow key={item.id} className="hover:bg-blue-900/20">
+                        <TableCell className="font-medium">{item.name}</TableCell>
+                        <TableCell>{item.category}</TableCell>
+                        <TableCell className="text-right">{item.quantity}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end">
+                            <DollarSign className="h-3 w-3 text-green-400 mr-0.5" />
+                            <span className="font-mono">{item.unitPrice.toLocaleString()}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right font-medium">
+                          <div className="flex items-center justify-end">
+                            <DollarSign className="h-3 w-3 text-green-400 mr-0.5" />
+                            <span className="font-mono">{item.totalPrice.toLocaleString()}</span>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+
+                    {/* Total row */}
+                    <TableRow className="bg-blue-900/30 font-medium hover:bg-blue-900/40">
+                      <TableCell colSpan={4} className="text-right flex items-center justify-end">
+                        <BarChart className="h-4 w-4 text-blue-300 mr-2" />
+                        <span className="text-blue-200">Total</span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end">
+                          <DollarSign className="h-4 w-4 text-green-400 mr-0.5" />
+                          <span className="font-mono text-green-300">${totalCost.toLocaleString()}</span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+
+              <h3 className="text-md font-medium mb-3">Cost Breakdown by Category</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-900/40">
+                  <div className="space-y-2">
+                    {categoryTotals.map((cat, index) => (
+                      <div key={index} className="flex justify-between items-center">
+                        <span>{cat.category}</span>
+                        <span className="font-medium">${cat.total.toLocaleString()}</span>
+                      </div>
+                    ))}
+                    <div className="pt-2 mt-2 border-t border-blue-900/30 flex justify-between items-center">
+                      <span className="font-medium">Total</span>
+                      <span className="font-bold text-blue-300">${totalCost.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-900/40">
+                  <h4 className="text-sm font-medium mb-2">Category Distribution</h4>
+                  <div className="space-y-2">
+                    {categoryTotals.map((cat, index) => {
+                      const percentage = (cat.total / totalCost) * 100
+                      return (
+                        <div key={index}>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span>{cat.category}</span>
+                            <span>{percentage.toFixed(1)}%</span>
+                          </div>
+                          <div className="w-full bg-blue-900/30 rounded-full h-2.5">
+                            <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${percentage}%` }}></div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="proposal" className="mt-0">
+            <div className="bg-black/40 backdrop-blur-sm rounded-lg border border-blue-900/50 p-4 overflow-y-auto h-[calc(100vh-220px)]">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">Proposal Details</h2>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="sm" className="flex items-center text-xs">
+                    <FileText className="h-3.5 w-3.5 mr-1" />
+                    Load Template
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex items-center text-xs">
+                    <Download className="h-3.5 w-3.5 mr-1" />
+                    Export as PDF
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {sections.map((section) => (
+                  <div key={section.id} className="bg-blue-950/40 rounded-md border border-blue-900/30 overflow-hidden">
+                    <button
+                      onClick={() => toggleExpand(section.id)}
+                      className="w-full flex items-center justify-between p-3 text-left"
+                    >
+                      <span className="font-medium">{section.title}</span>
+                      <span className="ml-2 text-blue-400">{section.isExpanded ? "▼" : "▶"}</span>
+                    </button>
+
+                    {section.isExpanded && (
+                      <div className="p-3 pt-0 border-t border-blue-900/30">
+                        <div className="flex justify-end mb-2">
+                          {section.isEditing ? (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 flex items-center text-xs"
+                              onClick={() => saveContent(section.id)}
+                            >
+                              <Save className="h-3.5 w-3.5 mr-1 text-green-400" />
+                              Save
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 flex items-center text-xs"
+                              onClick={() => toggleEdit(section.id)}
+                            >
+                              <Edit className="h-3.5 w-3.5 mr-1 text-blue-400" />
+                              Edit
+                            </Button>
+                          )}
+                        </div>
+
+                        {section.isEditing ? (
+                          <Textarea
+                            value={section.content}
+                            onChange={(e) => updateContent(section.id, e.target.value)}
+                            className="min-h-[200px] bg-blue-950/30 border-blue-800/50"
+                          />
+                        ) : (
+                          <div className="whitespace-pre-line text-sm">{section.content}</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </TabsContext.Provider>
     </div>
   )
 }

@@ -108,20 +108,12 @@ export function KnowledgeGraphViewer({ id }: { id: string }) {
   })
 
   const [skuInfo, setSkuInfo] = useState([
-    {
-      name: "Intel® Xeon® Scalable Processors",
-      price: 18000,
-      description: "High-performance server processors optimized for data center workloads",
-    },
-    { name: "Intel® Habana® Gaudi2 Accelerators", price: 17000, description: "Deep Learning Accelerators" },
-    { name: "Intel® SSD D7-P5520", price: 9600, description: "High-performance data center SSDs" },
-    {
-      name: "Intel® Optane™ Persistent Memory",
-      price: 13600,
-      description: "Persistent memory technology for high-performance storage",
-    },
-    { name: "Intel® oneAPI AI Analytics Toolkit", price: 5000, description: "AI Analytics Toolkit" },
-    { name: "Intel® Distribution of OpenVINO™", price: 3000, description: "Distribution of OpenVINO Toolkit" },
+    { name: "Intel® Xeon® Scalable Processors", price: 18000 },
+    { name: "Intel® Habana® Gaudi2 Accelerators", price: 17000 },
+    { name: "Intel® SSD D7-P5520", price: 9600 },
+    { name: "Intel® Optane™ Persistent Memory", price: 13600 },
+    { name: "Intel® oneAPI AI Analytics Toolkit", price: 5000 },
+    { name: "Intel® Distribution of OpenVINO™", price: 3000 },
   ])
 
   const [pricingInfo, setPricingInfo] = useState({

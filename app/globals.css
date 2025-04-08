@@ -44,7 +44,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    background: linear-gradient(to bottom, #004080, #001a33);
+    background: linear-gradient(to bottom, #0068b5, #001a33);
   }
 }
 

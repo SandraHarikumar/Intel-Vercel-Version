@@ -21,6 +21,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Breadcrumb } from "@/components/breadcrumb"
 
 interface SKU {
   id: string
@@ -312,6 +313,11 @@ export function SkuRecommendationsContent() {
    },
  ])
 
+ const breadcrumbItems = [
+   { label: "Home", href: "/" },
+   { label: "SKU Recommendations", href: "/sku-recommendations", active: true },
+ ]
+
  const toggleCategory = (category: string) => {
    setExpandedCategories({
      ...expandedCategories,
@@ -381,8 +387,9 @@ export function SkuRecommendationsContent() {
 
  return (
    <div className="h-[calc(100vh-120px)] flex flex-col">
+     <Breadcrumb items={breadcrumbItems} />
 
-     <div className="flex-1 pt-2 overflow-y-auto">
+     <div className="flex-1 p-4 bg-black overflow-y-auto">
        {/* Header section - now part of the scrollable content */}
        <div className="mb-4">
          <h2 className="text-xl font-semibold flex items-center text-white">

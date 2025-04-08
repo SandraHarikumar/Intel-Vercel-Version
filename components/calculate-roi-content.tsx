@@ -1,18 +1,14 @@
 "use client"
-import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { DollarSign, FileText, Calculator, Info, BarChart } from "lucide-react"
+import { Calculator, LineChart, DollarSign, FileText, Info, Clock, Download, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Breadcrumb } from "@/components/ui/breadcrumb"
+import { Breadcrumb } from "@/components/breadcrumb"
 
 export function CalculateRoiContent() {
   const router = useRouter()
 
-  // Uncomment the breadcrumb items definition
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Explore Usecase", href: "/" },
     { label: "SKU Recommendations", href: "/sku-recommendations" },
     { label: "Targeted Operational Cost", href: "/cost-questions" },
     { label: "Summary", href: "/summary" },
@@ -20,15 +16,14 @@ export function CalculateRoiContent() {
   ]
 
   // Fixed values (non-editable)
-  const [skuCosts, setSkuCosts] = useState(1071200)
-  const [directCosts, setDirectCosts] = useState(75000)
-  const [indirectCosts, setIndirectCosts] = useState(203000)
-  const [annualCost, setAnnualCost] = useState(145000)
-  const [annualBenefit, setAnnualBenefit] = useState(450000)
-  const [timeframe, setTimeframe] = useState(5)
-  const [discountRate, setDiscountRate] = useState(5)
-
+  const skuCosts = 1071200
+  const directCosts = 75000
+  const indirectCosts = 203000
   const initialInvestment = skuCosts + directCosts + indirectCosts
+  const annualCost = 145000
+  const annualBenefit = 450000 // Increased from 175000 to 450000
+  const timeframe = 5
+  const discountRate = 5
 
   // Calculated values
   const calculateROI = () => {
@@ -87,242 +82,277 @@ export function CalculateRoiContent() {
         // Calculate fractional year
         const previousCashFlow =
           i > 0
-            ? -initialInvestment + yearlyResults.slice(0, i).reduce((sum, r) => sum + r.benefit - r.cost, 0)
+            ? -initialInvestment + yearlyResults.slice(0, i).reduce((sum, r) => sum + (r.benefit - r.cost), 0)
             : -initialInvestment
 
-        const cashFlowThisYear = result.benefit - result.cost
-        const fractionOfYear = (0 - previousCashFlow) / cashFlowThisYear
-
-        return i + fractionOfYear
+        const fractionalYear = i + Math.abs(previousCashFlow) / (result.benefit - result.cost)
+        return fractionalYear
       }
     }
 
-    return timeframe + 1 // Payback period exceeds the timeframe
+    return timeframe + 1 // Payback period exceeds timeframe
   }
 
   const results = calculateROI()
 
   return (
     <div className="h-[calc(100vh-120px)] flex flex-col">
-      {/* Uncomment the breadcrumb component */}
-      <div className="p-4">
-        <Breadcrumb items={breadcrumbItems} />
-      </div>
+      <Breadcrumb items={breadcrumbItems} />
 
-      <div className="flex-1 pt-2 overflow-y-auto">
-        {/* Header section - no box around it */}
-        <div className="p-4 mb-4">
-          <h2 className="text-xl font-semibold flex items-center text-white">
-            <Calculator className="h-6 w-6 text-[#0068b5] mr-3" />
+      <div className="flex-1 bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-blue-900/50 overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold flex items-center">
+            <Calculator className="h-5 w-5 text-blue-400 mr-2" />
             ROI Calculator
           </h2>
         </div>
 
-        <div className="px-4 pb-4">
-          <div className="bg-[#002b4d] border border-[#003a66] rounded-md p-4 mb-6 max-w-full">
-            <div className="flex items-start">
-              <Info className="h-5 w-5 text-[#4a9eff] mr-2 mt-0.5 flex-shrink-0" />
-              <p className="text-sm text-white">
-                Review the ROI analysis for your solution. This calculation is based on the costs you provided and
-                estimated benefits. Adjust the values as needed to see how they impact the ROI.
-              </p>
-            </div>
+        <div className="bg-blue-900/20 border border-blue-800/30 rounded-md p-3 mb-6 flex items-start">
+          <Info className="h-5 w-5 text-blue-400 mr-2 mt-0.5 flex-shrink-0" />
+          <div className="text-sm">
+            <p>
+              This calculator shows the estimated Return on Investment (ROI) for your solution over a 5-year period.
+            </p>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Inputs */}
-            <div>
-              <h3 className="text-lg font-medium flex items-center mb-4 text-white">
-                <DollarSign className="h-5 w-5 text-white mr-2" />
-                Investment & Benefits
-              </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-900/40">
+            <h3 className="text-md font-medium flex items-center mb-4">
+              <DollarSign className="h-5 w-5 text-blue-400 mr-2" />
+              Financial Parameters
+            </h3>
 
-              <div className="space-y-4">
-                <div className="bg-[#001a33] rounded-lg p-4 border border-[#003a66]">
-                  <h4 className="text-sm font-medium text-white mb-3">Initial Investment</h4>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">SKU Costs</label>
-                      <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 text-[#4a9eff]" />
-                        <Input
-                          type="number"
-                          value={skuCosts}
-                          onChange={(e) => setSkuCosts(Number(e.target.value))}
-                          className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">Direct Costs</label>
-                      <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 text-[#4a9eff]" />
-                        <Input
-                          type="number"
-                          value={directCosts}
-                          onChange={(e) => setDirectCosts(Number(e.target.value))}
-                          className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">Indirect Costs</label>
-                      <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 text-[#4a9eff]" />
-                        <Input
-                          type="number"
-                          value={indirectCosts}
-                          onChange={(e) => setIndirectCosts(Number(e.target.value))}
-                          className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-[#003a66]">
-                      <label className="text-sm font-medium text-white">Total Initial Investment</label>
-                      <div className="text-sm font-medium text-white">${initialInvestment.toLocaleString()}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#001a33] rounded-lg p-4 border border-[#003a66]">
-                  <h4 className="text-sm font-medium text-white mb-3">Annual Costs & Benefits</h4>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">Annual Costs</label>
-                      <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 text-[#4a9eff]" />
-                        <Input
-                          type="number"
-                          value={annualCost}
-                          onChange={(e) => setAnnualCost(Number(e.target.value))}
-                          className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">Annual Benefits</label>
-                      <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 text-[#4a9eff]" />
-                        <Input
-                          type="number"
-                          value={annualBenefit}
-                          onChange={(e) => setAnnualBenefit(Number(e.target.value))}
-                          className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">Timeframe (Years)</label>
-                      <Input
-                        type="number"
-                        value={timeframe}
-                        onChange={(e) => setTimeframe(Number(e.target.value))}
-                        className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-gray-300">Discount Rate (%)</label>
-                      <Input
-                        type="number"
-                        value={discountRate}
-                        onChange={(e) => setDiscountRate(Number(e.target.value))}
-                        className="w-32 h-8 text-sm bg-[#001a33] border-[#003a66] text-white"
-                      />
-                    </div>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">SKU Costs</label>
+                  <div className="flex items-center">
+                    <DollarSign className="h-3.5 w-3.5 text-green-400 mr-1" />
+                    <span className="text-sm">{skuCosts.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Results */}
-            <div>
-              <h3 className="text-lg font-medium flex items-center mb-4 text-white">
-                <BarChart className="h-5 w-5 text-white mr-2" />
-                ROI Results
-              </h3>
-
-              <div className="space-y-4">
-                <div className="bg-[#001a33] rounded-lg p-4 border border-[#003a66]">
-                  <h4 className="text-sm font-medium text-white mb-3">Key Metrics</h4>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-300">Net Present Value (NPV)</span>
-                      <span className="text-sm font-medium text-white">
-                        ${Math.round(results.netPresentValue).toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-300">Return on Investment (ROI)</span>
-                      <span className="text-sm font-medium text-green-400">{results.roi.toFixed(2)}%</span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-300">Payback Period</span>
-                      <span className="text-sm font-medium text-white">{results.paybackPeriod.toFixed(2)} years</span>
-                    </div>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Direct Costs</label>
+                  <div className="flex items-center">
+                    <DollarSign className="h-3.5 w-3.5 text-green-400 mr-1" />
+                    <span className="text-sm">{directCosts.toLocaleString()}</span>
                   </div>
                 </div>
+              </div>
 
-                <div className="bg-[#001a33] rounded-lg p-4 border border-[#003a66]">
-                  <h4 className="text-sm font-medium text-white mb-3">Yearly Breakdown</h4>
-
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-4 gap-2 text-xs text-gray-400 pb-1 border-b border-[#003a66]">
-                      <div>Year</div>
-                      <div className="text-right">Costs</div>
-                      <div className="text-right">Benefits</div>
-                      <div className="text-right">Net Benefit</div>
-                    </div>
-
-                    {results.yearlyResults.map((result) => (
-                      <div key={result.year} className="grid grid-cols-4 gap-2 text-xs">
-                        <div className="text-white">Year {result.year}</div>
-                        <div className="text-right text-red-400">${Math.round(result.cost).toLocaleString()}</div>
-                        <div className="text-right text-green-400">${Math.round(result.benefit).toLocaleString()}</div>
-                        <div className="text-right text-white">${Math.round(result.netBenefit).toLocaleString()}</div>
-                      </div>
-                    ))}
-
-                    <div className="grid grid-cols-4 gap-2 text-xs font-medium pt-1 border-t border-[#003a66]">
-                      <div className="text-white">Total</div>
-                      <div className="text-right text-red-400">
-                        $
-                        {Math.round(
-                          results.yearlyResults.reduce((sum, r) => sum + r.cost, 0) + initialInvestment,
-                        ).toLocaleString()}
-                      </div>
-                      <div className="text-right text-green-400">
-                        ${Math.round(results.yearlyResults.reduce((sum, r) => sum + r.benefit, 0)).toLocaleString()}
-                      </div>
-                      <div className="text-right text-white">
-                        ${Math.round(results.netPresentValue).toLocaleString()}
-                      </div>
-                    </div>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Indirect Costs</label>
+                  <div className="flex items-center">
+                    <DollarSign className="h-3.5 w-3.5 text-green-400 mr-1" />
+                    <span className="text-sm">{indirectCosts.toLocaleString()}</span>
                   </div>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-blue-900/30">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Total Initial Investment</label>
+                  <div className="flex items-center">
+                    <DollarSign className="h-3.5 w-3.5 text-green-400 mr-1" />
+                    <span className="text-sm font-bold">{initialInvestment.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-blue-900/30">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Annual Operating Cost</label>
+                  <div className="flex items-center">
+                    <DollarSign className="h-3.5 w-3.5 text-green-400 mr-1" />
+                    <span className="text-sm">{annualCost.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Annual Benefit</label>
+                  <div className="flex items-center">
+                    <DollarSign className="h-3.5 w-3.5 text-green-400 mr-1" />
+                    <span className="text-sm">{annualBenefit.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Timeframe</label>
+                  <span className="text-sm">{timeframe} years</span>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">Discount Rate</label>
+                  <span className="text-sm">{discountRate}%</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end mt-6">
-            <Button
-              className="bg-[#0047AB] hover:bg-[#003d91] text-white"
-              onClick={() => router.push("/generate-proposal")}
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              Generate Proposal
-            </Button>
+          <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-900/40">
+            <h3 className="text-md font-medium flex items-center mb-4">
+              <LineChart className="h-5 w-5 text-blue-400 mr-2" />
+              ROI Results
+            </h3>
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-800/50">
+                  <h4 className="text-xs text-gray-300 mb-1">Net Present Value</h4>
+                  <div className="text-xl font-bold text-blue-300">
+                    ${Math.round(results.netPresentValue).toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-800/50">
+                  <h4 className="text-xs text-gray-300 mb-1">ROI (5 Year)</h4>
+                  <div className="text-xl font-bold text-blue-300">{Math.round(results.roi)}%</div>
+                </div>
+
+                <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-800/50">
+                  <h4 className="text-xs text-gray-300 mb-1">Payback Period</h4>
+                  <div className="text-xl font-bold text-blue-300">{results.paybackPeriod.toFixed(1)} years</div>
+                </div>
+
+                <div className="bg-blue-900/30 rounded-lg p-3 border border-blue-800/50">
+                  <h4 className="text-xs text-gray-300 mb-1">Annual Return</h4>
+                  <div className="text-xl font-bold text-blue-300">
+                    ${Math.round(annualBenefit - annualCost).toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-900/30 rounded-lg p-4 border border-blue-800/50">
+                <h4 className="text-sm font-medium mb-3">Return on Investment (5 Years)</h4>
+                <div className="h-[200px] flex items-end justify-between space-x-2 mt-6 mb-2 relative">
+                  {/* Y-axis labels */}
+                  <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-400 -ml-6">
+                    <span>100%</span>
+                    <span>75%</span>
+                    <span>50%</span>
+                    <span>25%</span>
+                    <span>0%</span>
+                  </div>
+
+                  {/* Horizontal grid lines */}
+                  <div className="absolute left-0 top-0 h-full w-full flex flex-col justify-between pointer-events-none">
+                    <div className="border-t border-blue-900/30 w-full h-0"></div>
+                    <div className="border-t border-blue-900/30 w-full h-0"></div>
+                    <div className="border-t border-blue-900/30 w-full h-0"></div>
+                    <div className="border-t border-blue-900/30 w-full h-0"></div>
+                    <div className="border-t border-blue-900/30 w-full h-0"></div>
+                  </div>
+
+                  {results.yearlyResults.map((result) => (
+                    <div key={result.year} className="flex flex-col items-center flex-1 z-10">
+                      <div
+                        className="w-full bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-md transition-all duration-500 relative group shadow-lg"
+                        style={{
+                          height: `${Math.max(0, Math.min(100, (result.yearlyROI / 100) * 100))}%`,
+                          minHeight: "10px",
+                        }}
+                      >
+                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">
+                          ROI: {Math.round(result.yearlyROI)}%
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs font-medium">Year {result.year}</div>
+                      <div className="text-xs text-blue-300">{Math.round(result.yearlyROI)}%</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 border-t border-blue-800/30 pt-2">
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>Initial investment: ${initialInvestment.toLocaleString()}</span>
+                    <span>Total 5-year ROI: {Math.round(results.roi)}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center space-x-3">
+                <Button variant="outline" className="text-xs">
+                  <Download className="h-3.5 w-3.5 mr-1.5" />
+                  Download Report
+                </Button>
+                <Button variant="outline" className="text-xs">
+                  <Share2 className="h-3.5 w-3.5 mr-1.5" />
+                  Share Results
+                </Button>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-900/40 mb-6">
+          <h3 className="text-md font-medium flex items-center mb-4">
+            <Clock className="h-5 w-5 text-blue-400 mr-2" />
+            Year-by-Year Breakdown
+          </h3>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-blue-900/40">
+                  <th className="px-4 py-2 text-left">Year</th>
+                  <th className="px-4 py-2 text-right">Cost</th>
+                  <th className="px-4 py-2 text-right">Benefit</th>
+                  <th className="px-4 py-2 text-right">Net Benefit</th>
+                  <th className="px-4 py-2 text-right">Cumulative</th>
+                  <th className="px-4 py-2 text-right">ROI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-blue-900/30">
+                  <td className="px-4 py-2">0</td>
+                  <td className="px-4 py-2 text-right">${initialInvestment.toLocaleString()}</td>
+                  <td className="px-4 py-2 text-right">$0</td>
+                  <td className="px-4 py-2 text-right text-red-400">-${initialInvestment.toLocaleString()}</td>
+                  <td className="px-4 py-2 text-right text-red-400">-${initialInvestment.toLocaleString()}</td>
+                  <td className="px-4 py-2 text-right text-red-400">-100%</td>
+                </tr>
+                {results.yearlyResults.map((result) => (
+                  <tr key={result.year} className="border-b border-blue-900/30">
+                    <td className="px-4 py-2">{result.year}</td>
+                    <td className="px-4 py-2 text-right">${Math.round(result.cost).toLocaleString()}</td>
+                    <td className="px-4 py-2 text-right">${Math.round(result.benefit).toLocaleString()}</td>
+                    <td
+                      className={`px-4 py-2 text-right ${result.netBenefit >= 0 ? "text-green-400" : "text-red-400"}`}
+                    >
+                      {result.netBenefit >= 0 ? "$" : "-$"}
+                      {Math.abs(Math.round(result.netBenefit)).toLocaleString()}
+                    </td>
+                    <td
+                      className={`px-4 py-2 text-right ${result.cumulativeNetBenefit >= 0 ? "text-green-400" : "text-red-400"}`}
+                    >
+                      {result.cumulativeNetBenefit >= 0 ? "$" : "-$"}
+                      {Math.abs(Math.round(result.cumulativeNetBenefit)).toLocaleString()}
+                    </td>
+                    <td className={`px-4 py-2 text-right ${result.yearlyROI >= 0 ? "text-green-400" : "text-red-400"}`}>
+                      {Math.round(result.yearlyROI)}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="flex justify-end mt-6">
+          <Button className="bg-blue-700 hover:bg-blue-600" onClick={() => router.push("/generate-proposal")}>
+            <FileText className="h-4 w-4 mr-2" />
+            Generate Proposal
+          </Button>
         </div>
       </div>
     </div>

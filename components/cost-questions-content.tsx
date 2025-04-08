@@ -25,7 +25,6 @@ export function CostQuestionsContent() {
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Explore Usecase", href: "/" },
     { label: "SKU Recommendations", href: "/sku-recommendations" },
     { label: "Targeted Operational Cost", href: "/cost-questions", active: true },
   ]
@@ -60,9 +59,9 @@ export function CostQuestionsContent() {
         <Breadcrumb items={breadcrumbItems} />
       </div>
 
-      <div className="flex-1 pt-2 overflow-y-auto">
+      <div className="flex-1 bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-blue-900/50 overflow-y-auto">
         {/* Header section - no box around it */}
-        <div className="p-4 mb-4">
+        <div className="p-2">
           <h2 className="text-xl font-semibold flex items-center text-white">
             <DollarSign className="h-6 w-6 text-[#0068b5] mr-3" />
             Targeted Operational Cost
@@ -351,7 +350,7 @@ export function CostQuestionsContent() {
           </div>
 
           <div className="flex justify-end mt-6">
-            <Button className="bg-[#0068b5] hover:bg-[#0056a2] text-white" onClick={handleNext}>
+            <Button className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-blue-700 hover:bg-blue-600" onClick={handleNext}>
               <FileText className="h-4 w-4 mr-2" />
               View Summary
             </Button>

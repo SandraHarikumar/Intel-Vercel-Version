@@ -6,6 +6,7 @@ import {
   Network,
   Plus,
   Search,
+  Filter,
   Trash2,
   Edit,
   Eye,
@@ -49,20 +50,45 @@ export function KnowledgeGraphsContent() {
 
   // Sample data
   const [knowledgeGraphs, setKnowledgeGraphs] = useState<KnowledgeGraph[]>([
-    {
+  {
       id: "1",
-      name: "Financial Services Domain",
-      category: "finance",
-      description: "Knowledge graph for financial services domain including banking, insurance, and investments",
+      name: "Usecases",
+      category: "Usecases",
+      description: "Knowledge graph for usecases",
+      nodes: 500,
+      edges: 1000,
+      createdAt: "2023-05-15",
+      updatedAt: "2023-06-20",
+      status: "active",
+      dataSource: "Usecases Documentation",
+    },
+  {
+      id: "2",
+      name: "SKUs",
+      category: "SKUs",
+      description: "Knowledge graph for SKUs",
+      nodes: 1000,
+      edges: 200,
+      createdAt: "2023-05-15",
+      updatedAt: "2023-06-20",
+      status: "active",
+      dataSource: "SKUs Documentation",
+    },
+  ,
+    {
+      id: "3",
+      name: "Prices",
+      category: "Prices",
+      description: "Knowledge graph for Prices",
       nodes: 1250,
       edges: 3450,
       createdAt: "2023-05-15",
       updatedAt: "2023-06-20",
       status: "active",
-      dataSource: "Financial Services Documentation",
+      dataSource: "Prices Documentation",
     },
     {
-      id: "2",
+      id: "4",
       name: "Healthcare Relationships",
       category: "healthcare",
       description: "Medical entities and their relationships for healthcare applications",
@@ -74,7 +100,7 @@ export function KnowledgeGraphsContent() {
       dataSource: "Medical Ontology Database",
     },
     {
-      id: "3",
+      id: "5",
       name: "Retail Product Taxonomy",
       category: "retail",
       description: "Product categories, attributes, and relationships for retail applications",
@@ -86,7 +112,7 @@ export function KnowledgeGraphsContent() {
       dataSource: "Product Catalog",
     },
     {
-      id: "4",
+      id: "6",
       name: "Manufacturing Processes",
       category: "manufacturing",
       description: "Manufacturing processes, equipment, and dependencies",
@@ -96,42 +122,6 @@ export function KnowledgeGraphsContent() {
       updatedAt: "2023-06-12",
       status: "processing",
       dataSource: "Manufacturing Documentation",
-    },
-    {
-      id: "5",
-      name: "Use Case Analysis",
-      category: "usecase",
-      description: "Knowledge graph for use case analysis, requirements, and dependencies",
-      nodes: 850,
-      edges: 1200,
-      createdAt: "2023-07-10",
-      updatedAt: "2023-07-15",
-      status: "active",
-      dataSource: "Use Case Documentation",
-    },
-    {
-      id: "6",
-      name: "SKU Relationships",
-      category: "sku",
-      description: "Knowledge graph for SKU relationships, compatibility, and dependencies",
-      nodes: 1100,
-      edges: 2300,
-      createdAt: "2023-07-05",
-      updatedAt: "2023-07-20",
-      status: "active",
-      dataSource: "Product Catalog and Compatibility Matrix",
-    },
-    {
-      id: "7",
-      name: "Pricing Models",
-      category: "price",
-      description: "Knowledge graph for pricing models, discounts, and cost relationships",
-      nodes: 750,
-      edges: 1800,
-      createdAt: "2023-07-08",
-      updatedAt: "2023-07-18",
-      status: "active",
-      dataSource: "Pricing Documentation and Cost Models",
     },
   ])
 
@@ -533,6 +523,14 @@ export function KnowledgeGraphsContent() {
               className="pl-8 bg-blue-950/30 border-blue-800/50 h-8 text-sm"
             />
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center text-xs bg-blue-900/30 border-blue-700/50 hover:bg-blue-800/50"
+          >
+            <Filter className="h-3.5 w-3.5 mr-1" />
+            Filter
+          </Button>
         </div>
 
         <div className="rounded-md border border-blue-900/50 overflow-hidden bg-gradient-to-b from-blue-950/30 to-black/50">
@@ -551,7 +549,7 @@ export function KnowledgeGraphsContent() {
             <TableBody>
               {filteredGraphs.map((graph) => (
                 <TableRow key={graph.id} className="hover:bg-blue-900/20">
-                  <TableCell className="font-medium">
+                  <TableCell>
                     <div className="flex items-center">
                       <Network className="h-4 w-4 text-blue-400 mr-2" />
                       <div>
