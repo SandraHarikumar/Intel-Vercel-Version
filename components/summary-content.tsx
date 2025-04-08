@@ -45,7 +45,7 @@ export function SummaryContent() {
 
   return (
     <div className="h-[calc(100vh-120px)] flex flex-col">
-      <div className="p-4">
+      <div className="p-2">
         <Breadcrumb items={breadcrumbItems} />
       </div>
 

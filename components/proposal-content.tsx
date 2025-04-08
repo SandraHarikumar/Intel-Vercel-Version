@@ -357,7 +357,9 @@ Model Drift
 
   return (
     <div className="h-[calc(100vh-120px)]">
-     <Breadcrumb items={breadcrumbItems} />
+      <div className="p-4">
+        <Breadcrumb items={breadcrumbItems} />
+      </div>
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-semibold">Generate Proposal</h1>
         <div className="flex items-center space-x-2">
