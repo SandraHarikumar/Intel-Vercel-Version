@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger, TabsContext } from "@/compone
 import { FileText, Download, Edit, Save, X, CheckCircle, BarChart, DollarSign, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table",
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Breadcrumb } from "@/components/breadcrumb"
 
 interface ProposalSection {
