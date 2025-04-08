@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 100% 10%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --primary: 210 100% 35%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    background: linear-gradient(to bottom, #004080, #001a33);
+  }
+}
+
+@keyframes data-flow {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: calc(100% - 20%);
+  }
+}
+
+@keyframes data-flow-reverse {
+  0% {
+    right: 0;
+  }
+  100% {
+    right: calc(100% - 20%);
+  }
+}
+
+@keyframes vertical-flow {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: calc(100% - 20%);
+  }
+}
+
+@keyframes vertical-flow-up {
+  0% {
+    bottom: 0;
+  }
+  100% {
+    bottom: calc(100% - 20%);
+  }
+}
+
+@keyframes storage-activity {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: calc(100% - 1.5rem);
+  }
+}
